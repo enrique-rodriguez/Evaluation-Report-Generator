@@ -7,17 +7,21 @@ class TestCreateReport(TestCase):
 
     def setUp(self):
         readers = {'csv': Mock()}
-        writer = Mock()
+        writer = {'csv': Mock()}
 
-        self.create_report = CreateReport(readers=readers, writer=writer)
+        self.create_report = CreateReport(readers=readers, writers=writer)
 
     def test_raises_empty_report(self):
         with self.assertRaises(self.create_report.EmptyReport):
-            self.create_report.create()
+            self.create_report.create([], 'csv')
 
     def test_evaluation_added_to_report(self):
-        self.create_report.create(['file.csv'])
+        self.create_report.create(['file.csv'], 'csv')
 
     def test_raises_reader_not_available(self):
         with self.assertRaises(self.create_report.EvaluationReaderNotAvailable):
             self.create_report.get_appropriate_reader('file.txt')
+
+    def test_raises_writer_not_available(self):
+        with self.assertRaises(self.create_report.ReportWriterNotAvailable):
+            self.create_report.get_appropriate_writer("docx")
