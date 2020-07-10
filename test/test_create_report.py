@@ -16,7 +16,7 @@ class TestCreateReport(TestCase):
             self.create_report.create([], 'csv')
 
     def test_evaluation_added_to_report(self):
-        self.create_report.create(['file.csv'], 'csv')
+        self.create_report.create(['file.csv'], 'file.csv')
 
     def test_raises_reader_not_available(self):
         with self.assertRaises(self.create_report.EvaluationReaderNotAvailable):
@@ -24,4 +24,4 @@ class TestCreateReport(TestCase):
 
     def test_raises_writer_not_available(self):
         with self.assertRaises(self.create_report.ReportWriterNotAvailable):
-            self.create_report.get_appropriate_writer("docx")
+            self.create_report.get_appropriate_writer("file.docx")

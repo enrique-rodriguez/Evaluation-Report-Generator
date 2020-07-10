@@ -13,14 +13,14 @@ class CreateReport:
         self.evaluation_readers = readers
         self.report_writers = writers
 
-    def create(self, evaluations: List[str], output_format: str):
+    def create(self, evaluations: List[str], output_file: str):
 
         report, errors = self.get_report(evaluations)
 
         if len(report) == 0:
             raise self.EmptyReport
 
-        writer = self.get_appropriate_writer(output_format)
+        writer = self.get_appropriate_writer(output_file)
 
         writer.write(report)
 
@@ -38,18 +38,23 @@ class CreateReport:
 
         return report, errors
 
-    def get_appropriate_writer(self, output_format: str):
+    def get_appropriate_writer(self, filename: str):
+        if '.' not in filename:
+            raise ValueError("File has no extension")
 
-        if output_format not in self.report_writers:
-            raise self.ReportWriterNotAvailable(output_format)
+        # Not the best way to know the type of file, but it will have to do
+        name, extension = filename.split('.')
 
-        return self.report_writers.get(output_format)
+        if extension not in self.report_writers:
+            raise self.ReportWriterNotAvailable(extension)
+
+        return self.report_writers.get(extension)
 
     def get_appropriate_reader(self, file: str):
-        # Not the best way to know the type of file, but it will have to do
         if '.' not in file:
             raise ValueError("File has no extension")
 
+        # Not the best way to know the type of file, but it will have to do
         name, extension = file.split('.')
 
         if extension not in self.evaluation_readers:
