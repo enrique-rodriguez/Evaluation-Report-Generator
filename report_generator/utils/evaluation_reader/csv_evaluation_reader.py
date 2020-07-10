@@ -1,5 +1,6 @@
 import pandas as pd
 from functools import reduce
+from os import path
 from report_generator.usecases.port import EvaluationReader
 from report_generator.domain import Evaluation
 
@@ -9,13 +10,15 @@ class CSVEvaluationReader(EvaluationReader):
     def __init__(self, question_signature, maximum_points_per_question):
         super().__init__(question_signature, maximum_points_per_question)
         self.df = None
+        self.filename = None
 
-    def read(self, file):
-        self.df = pd.read_csv(file, lineterminator='\n')
+    def read(self, filename):
+        self.df = pd.read_csv(filename, lineterminator='\n')
+        self.filename = filename
 
         evaluation = Evaluation(
             professor=self.get_professors_name(),
-            course=None,
+            course=self.get_course_name(),
             student_count=self.get_number_of_students(),
             question_count=self.get_number_of_questions(),
             score=0,
@@ -31,7 +34,8 @@ class CSVEvaluationReader(EvaluationReader):
         pass
 
     def get_course_name(self):
-        pass
+        # Just return the name of the file since its not mentioned anywhere else
+        return path.basename(self.filename)
 
     def get_number_of_students(self):
         row_count, col_count = self.df.shape

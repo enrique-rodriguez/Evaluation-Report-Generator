@@ -21,3 +21,7 @@ class TestCSVEvaluationReader(TestCase):
     def test_number_of_questions(self):
 
         self.assertEqual(self.evaluation.question_count, 6)
+
+    def test_get_course_name(self):
+
+        self.assertEqual(self.evaluation.course, "test_evaluation.csv")
