@@ -1,8 +1,8 @@
-from report_generator.usecases.port import EvaluationReader
-from report_generator.domain import Evaluation
+import pandas as pd
+from .pandas_evaluation_reader import PandasEvaluationReader
 
 
-class ExcelEvaluationReader(EvaluationReader) -> Evaluation:
+class ExcelEvaluationReader(PandasEvaluationReader):
 
-    def read(self, filename: str):
-        raise NotImplementedError
+    def get_dataframe(self, filename):
+        return pd.read_excel(filename, lineterminator='\n', engine="openpyxl")

@@ -7,13 +7,13 @@ class TestCreateReport(TestCase):
 
     def setUp(self):
         readers = {'csv': Mock()}
-        writer = {'csv': Mock()}
+        writers = {'csv': Mock()}
 
-        self.create_report = CreateReport(readers=readers, writers=writer)
+        self.create_report = CreateReport(readers=readers, writers=writers)
 
     def test_raises_empty_report(self):
         with self.assertRaises(self.create_report.EmptyReport):
-            self.create_report.create([], 'csv')
+            self.create_report.create([], 'report.csv')
 
     def test_evaluation_added_to_report(self):
         self.create_report.create(['file.csv'], 'file.csv')

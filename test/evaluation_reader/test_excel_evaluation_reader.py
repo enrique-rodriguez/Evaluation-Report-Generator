@@ -1,6 +1,6 @@
 from unittest import TestCase
-from report_generator.utils.evaluation_reader.csv_evaluation_reader import (
-    CSVEvaluationReader
+from report_generator.utils.evaluation_reader.excel_evaluation_reader import (
+    ExcelEvaluationReader
 )
 
 ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
@@ -9,16 +9,17 @@ QUESTION_SIGNATURE = "Criterios de evaluación: >>"
 MAX_POINTS_PER_QUESTION = 4
 
 
-class TestCSVEvaluationReader(TestCase):
+class TestExcelEvaluationReader(TestCase):
 
     def setUp(self):
-        self.reader = CSVEvaluationReader(
+        self.reader = ExcelEvaluationReader(
             PROFESSOR_SIGNATURE,
             QUESTION_SIGNATURE,
             MAX_POINTS_PER_QUESTION,
             ANSWER_PATTERN
         )
-        self.evaluation = self.reader.read('data/test_evaluation.csv')
+
+        self.evaluation = self.reader.read('data/test_evaluation.xlsx')
 
     def test_get_professors_name(self):
 
@@ -34,11 +35,11 @@ class TestCSVEvaluationReader(TestCase):
 
     def test_get_course_name(self):
 
-        self.assertEqual(self.evaluation.course, "test_evaluation.csv")
+        self.assertEqual(self.evaluation.course, "test_evaluation.xlsx")
 
     def test_raises_invalid_max_points_per_question(self):
         with self.assertRaises(self.reader.InvalidMaximumPointsPerQuestion):
-            CSVEvaluationReader('professor', 'question', 0, ANSWER_PATTERN)
+            ExcelEvaluationReader("", "", 0, "")
 
     def test_calculate_total_points(self):
         self.assertEqual(self.evaluation.score, 299)

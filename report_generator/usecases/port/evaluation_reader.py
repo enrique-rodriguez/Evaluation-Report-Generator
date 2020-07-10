@@ -1,14 +1,16 @@
 import abc
-
+import re
 from report_generator.domain.evaluation import Evaluation
 
 
 class EvaluationReader(abc.ABC):
 
-    def __init__(self, question_signature, max_points_per_question):
+    def __init__(self, instructor_signature: str, question_signature: str, max_points_per_question: int, answer_pattern: str):
         if max_points_per_question == 0:
             raise self.InvalidMaximumPointsPerQuestion(max_points_per_question)
 
+        self.program = re.compile(answer_pattern)
+        self.instructor_signature = instructor_signature
         self.question_signature = question_signature
         self.max_points_per_question = max_points_per_question
 
