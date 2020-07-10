@@ -34,7 +34,8 @@ class CSVEvaluationReader(EvaluationReader):
         pass
 
     def get_course_name(self):
-        # Just return the name of the file since its not mentioned anywhere else
+        # Just return the name of the file since
+        # the name of the course its not mentioned anywhere else
         return path.basename(self.filename)
 
     def get_number_of_students(self):

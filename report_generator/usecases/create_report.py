@@ -45,6 +45,9 @@ class CreateReport:
 
     def get_appropriate_reader(self, file):
         # Not the best way to know the type of file, but it will have to do
+        if '.' not in file:
+            raise ValueError("File has not extension")
+
         name, extension = file.split('.')
 
         if extension not in self.evaluation_readers:
