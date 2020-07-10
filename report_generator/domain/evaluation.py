@@ -2,7 +2,7 @@
 
 class Evaluation:
 
-    def __init__(self, professor, course, student_count, question_count, score, maximum):
+    def __init__(self, professor: str, course: str, student_count: int, question_count: int, score: int, maximum: int):
         self.professor = professor
         self.course = course
         self.student_count = student_count

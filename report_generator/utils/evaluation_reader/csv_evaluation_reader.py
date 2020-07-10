@@ -7,12 +7,12 @@ from report_generator.domain import Evaluation
 
 class CSVEvaluationReader(EvaluationReader):
 
-    def __init__(self, question_signature, maximum_points_per_question):
+    def __init__(self, question_signature: str, maximum_points_per_question: int):
         super().__init__(question_signature, maximum_points_per_question)
         self.df = None
         self.filename = None
 
-    def read(self, filename):
+    def read(self, filename: str):
         self.df = pd.read_csv(filename, lineterminator='\n')
         self.filename = filename
 

@@ -11,6 +11,5 @@ class Report:
     def __iter__(self):
         return iter(self.evaluations)
 
-    @property
-    def number_of_evaluations(self):
+    def __len__(self):
         return len(self.evaluations)

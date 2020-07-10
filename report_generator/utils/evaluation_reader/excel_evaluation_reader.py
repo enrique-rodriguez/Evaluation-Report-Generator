@@ -4,5 +4,5 @@ from report_generator.domain import Evaluation
 
 class ExcelEvaluationReader(EvaluationReader) -> Evaluation:
 
-    def read(self, evaluation):
+    def read(self, filename: str):
         raise NotImplementedError
