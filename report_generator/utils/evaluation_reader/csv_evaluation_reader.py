@@ -13,8 +13,11 @@ class CSVEvaluationReader(EvaluationReader):
         self.filename = None
 
     def read(self, filename: str):
-        self.df = pd.read_csv(filename, lineterminator='\n')
-        self.filename = filename
+        try:
+            self.df = pd.read_csv(filename, lineterminator='\n')
+            self.filename = filename
+        except Exception as error:
+            raise self.ParsingError(filename, error)
 
         evaluation = Evaluation(
             professor=self.get_professors_name(),
@@ -35,7 +38,7 @@ class CSVEvaluationReader(EvaluationReader):
 
     def get_course_name(self):
         # Just return the name of the file since
-        # the name of the course its not mentioned anywhere else
+        # the name of the course is not mentioned anywhere else
         return path.basename(self.filename)
 
     def get_number_of_students(self):

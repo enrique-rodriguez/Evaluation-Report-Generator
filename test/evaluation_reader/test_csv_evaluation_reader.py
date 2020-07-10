@@ -25,3 +25,7 @@ class TestCSVEvaluationReader(TestCase):
     def test_get_course_name(self):
 
         self.assertEqual(self.evaluation.course, "test_evaluation.csv")
+
+    def test_raises_invalid_max_points_per_question(self):
+        with self.assertRaises(self.reader.InvalidMaximumPointsPerQuestion):
+            CSVEvaluationReader('question', 0)
