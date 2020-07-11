@@ -9,6 +9,10 @@ from report_generator.utils.evaluation_reader import (
     EvaluationReaderConfig
 )
 
+from report_generator.utils.report_writer import (
+    ExcelReportWriter
+)
+
 ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
 PROFESSOR_SIGNATURE = "Nombre del Instructor:"
 QUESTION_SIGNATURE = "Criterios de evaluación: >>"
@@ -58,7 +62,7 @@ container.register(
     "ReportWriters",
     lambda c: {
         'csv': None,
-        'xlsx': None,
+        'xlsx': ExcelReportWriter(),
     }
 )
 
