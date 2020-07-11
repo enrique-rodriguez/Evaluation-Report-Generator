@@ -13,7 +13,11 @@ pip3 install -r requirements.txt
 
 ## Usage example
 
-TODO
+### Running the GUI
+```sh
+python3 main.py
+```
+
 ## Development setup
 
 Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.

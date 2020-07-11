@@ -24,16 +24,16 @@ default_config = {
 
 try:
     settings = open('settings.json', 'r')
-    config = json.load(settings_file)
+    config = json.load(settings)
     settings.close()
 except FileNotFoundError:
+    print("Settings file not found, using default settings")
     config = default_config
 
 
 container = Container()
 
-# Reader Initialization
-
+# Utilities initialization
 container.register(
     "EvaluationReaderConfig",
     lambda c: EvaluationReaderConfig(
@@ -44,6 +44,7 @@ container.register(
     )
 )
 
+# Readers Initialization
 container.register(
     "EvaluationReaders",
     lambda c: {
@@ -52,7 +53,14 @@ container.register(
     }
 )
 
-# TODO: Writer Initialization. Add writers here
+# Writers Initialization
+container.register(
+    "ReportWriters",
+    lambda c: {
+        'csv': None,
+        'xlsx': None,
+    }
+)
 
 # Use Case Initialization
 
@@ -60,9 +68,6 @@ container.register(
     "CreateReport",
     lambda c: CreateReport(
         readers=c.get("EvaluationReaders"),
-        writers={
-            'csv': None,
-            'xlsx': None
-        }
+        writers=c.get("ReportWriters")
     )
 )

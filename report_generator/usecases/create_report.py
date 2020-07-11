@@ -62,6 +62,9 @@ class CreateReport:
 
         return self.evaluation_readers.get(extension)
 
+    def get_write_formats(self):
+        return list(self.report_writers.keys())
+
     class EmptyReport(Exception):
         def __init__(self):
             super().__init__("The Report is Empty")
