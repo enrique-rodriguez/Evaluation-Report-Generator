@@ -13,4 +13,6 @@ class Evaluation:
     @property
     def average(self):
         # Formula: number_of_points_obtained / question_count * student_count
-        return 0
+        average = self.score/(self.question_count*self.student_count)
+
+        return round(average, 2)

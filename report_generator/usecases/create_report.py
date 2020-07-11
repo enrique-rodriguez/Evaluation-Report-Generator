@@ -22,7 +22,7 @@ class CreateReport:
 
         writer = self.get_appropriate_writer(output_file)
 
-        writer.write(report)
+        writer.write(report, output_file)
 
     def get_report(self, evaluations: List[str]):
         errors = {}

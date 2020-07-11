@@ -48,3 +48,6 @@ class TestCSVEvaluationReader(TestCase):
 
     def test_maximum_score(self):
         self.assertEqual(self.evaluation.maximum, 312)
+
+    def test_average_score(self):
+        self.assertAlmostEqual(self.evaluation.average, 3.83)

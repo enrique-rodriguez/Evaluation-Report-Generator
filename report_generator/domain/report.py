@@ -1,11 +1,13 @@
+from typing import List
+from .evaluation import Evaluation
 
 
 class Report:
 
     def __init__(self):
-        self.evaluations = list()
+        self.evaluations: List[Evaluation] = list()
 
-    def add(self, evaluation):
+    def add(self, evaluation: Evaluation):
         self.evaluations.append(evaluation)
 
     def __iter__(self):
@@ -13,3 +15,7 @@ class Report:
 
     def __len__(self):
         return len(self.evaluations)
+
+
+if __name__ == '__main__':
+    print('hello')

@@ -10,7 +10,8 @@ from report_generator.utils.evaluation_reader import (
 )
 
 from report_generator.utils.report_writer import (
-    ExcelReportWriter
+    ExcelReportWriter,
+    CSVReportWriter
 )
 
 ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
@@ -61,7 +62,7 @@ container.register(
 container.register(
     "ReportWriters",
     lambda c: {
-        'csv': None,
+        'csv': CSVReportWriter(),
         'xlsx': ExcelReportWriter(),
     }
 )

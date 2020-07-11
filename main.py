@@ -83,9 +83,8 @@ class CreateReportController(Frame):
         self.create_report_button.pack(pady=PADDING)
 
     def bind_events(self):
-        self.report_name_text_field.bind("<FocusIn>", select_all)
-        self.report_name_text_field.bind("<Command-a>", select_all)
-        self.report_name_text_field.bind("<Control-KeyRelease-a>", select_all)
+        for event in ["<FocusIn>", "<Command-a>", "<Control-KeyRelease-a>"]:
+            self.report_name_text_field.bind(event, select_all)
 
     def validate_report_name(self, report_name):
         selected_format = self.selected_format.get()
