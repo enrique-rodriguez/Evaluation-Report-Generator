@@ -1,23 +1,27 @@
 from unittest import TestCase
-from report_generator.utils.evaluation_reader.excel_evaluation_reader import (
-    ExcelEvaluationReader
+from report_generator.utils.evaluation_reader import (
+    ExcelEvaluationReader,
+    EvaluationReaderConfig
 )
+
 
 ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
 PROFESSOR_SIGNATURE = "Nombre del Instructor:"
 QUESTION_SIGNATURE = "Criterios de evaluación: >>"
 MAX_POINTS_PER_QUESTION = 4
 
+reader_config = EvaluationReaderConfig(
+    PROFESSOR_SIGNATURE,
+    QUESTION_SIGNATURE,
+    MAX_POINTS_PER_QUESTION,
+    ANSWER_PATTERN
+)
+
 
 class TestExcelEvaluationReader(TestCase):
 
     def setUp(self):
-        self.reader = ExcelEvaluationReader(
-            PROFESSOR_SIGNATURE,
-            QUESTION_SIGNATURE,
-            MAX_POINTS_PER_QUESTION,
-            ANSWER_PATTERN
-        )
+        self.reader = ExcelEvaluationReader(reader_config)
 
         self.evaluation = self.reader.read('data/test_evaluation.xlsx')
 
@@ -39,7 +43,7 @@ class TestExcelEvaluationReader(TestCase):
 
     def test_raises_invalid_max_points_per_question(self):
         with self.assertRaises(self.reader.InvalidMaximumPointsPerQuestion):
-            ExcelEvaluationReader("", "", 0, "")
+            ExcelEvaluationReader(EvaluationReaderConfig("", "", 0, ""))
 
     def test_calculate_total_points(self):
         self.assertEqual(self.evaluation.score, 299)

@@ -1,17 +1,18 @@
 import abc
 import pandas as pd
-
 from os import path
 from functools import reduce
 from report_generator.domain import Evaluation
-from report_generator.usecases.port import EvaluationReader
+from report_generator.usecases.port import (
+    EvaluationReader,
+    EvaluationReaderConfig
+)
 
 
 class PandasEvaluationReader(EvaluationReader, abc.ABC):
 
-    def __init__(self, instructor_signature: str, question_signature: str, maximum_points_per_question: int, answer_pattern: str):
-        super().__init__(instructor_signature, question_signature,
-                         maximum_points_per_question, answer_pattern)
+    def __init__(self, config: EvaluationReaderConfig):
+        super().__init__(config)
         self.df = None
         self.filename = None
 
