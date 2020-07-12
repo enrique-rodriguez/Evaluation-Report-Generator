@@ -1,7 +1,8 @@
 import json
 from utils.container import Container
-
 from report_generator.usecases import CreateReport
+
+from .config import Config
 
 from report_generator.utils.evaluation_reader import (
     ExcelEvaluationReader,
@@ -13,6 +14,8 @@ from report_generator.utils.report_writer import (
     ExcelReportWriter,
     CSVReportWriter
 )
+
+SETTINGS_FILE = "settings.json"
 
 ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
 PROFESSOR_SIGNATURE = "Nombre del Instructor:"
@@ -27,15 +30,15 @@ default_config = {
     "answer_pattern": ANSWER_PATTERN
 }
 
+
 try:
-    settings = open('settings.json', 'r')
-    config = json.load(settings)
-    settings.close()
+    config = Config(SETTINGS_FILE)
 except FileNotFoundError:
     print("Settings file not found, using default settings")
-    config = default_config
+    config = Config(SETTINGS_FILE, default_config)
+    config.save()
 
-
+# Stores all of the dependencies in one place for easy access
 container = Container()
 
 # Utilities initialization
@@ -68,7 +71,6 @@ container.register(
 )
 
 # Use Case Initialization
-
 container.register(
     "CreateReport",
     lambda c: CreateReport(

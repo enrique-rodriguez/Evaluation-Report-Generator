@@ -1,8 +1,7 @@
-from report_generator.usecases.port import ReportWriter
-from report_generator.domain import Report
+from .pandas_report_writer import PandasReportWriter
 
 
-class ExcelReportWriter(ReportWriter):
+class ExcelReportWriter(PandasReportWriter):
 
-    def write(self, report: Report, filename: str):
-        raise NotImplementedError
+    def export_df(self, df, filename):
+        df.to_excel(filename, index=False)
