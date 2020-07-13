@@ -23,3 +23,7 @@ class PandasReportWriter(ReportWriter, abc.ABC):
         })
 
         self.export_df(df, filename)
+
+        total_written = df.shape[0]
+
+        return total_written

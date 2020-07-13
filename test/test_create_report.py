@@ -8,8 +8,10 @@ class TestCreateReport(TestCase):
     def setUp(self):
         readers = {'csv': Mock()}
         writers = {'csv': Mock()}
+        presenter = Mock()
 
-        self.create_report = CreateReport(readers=readers, writers=writers)
+        self.create_report = CreateReport(
+            readers=readers, writers=writers, presenter=presenter)
 
     def test_raises_empty_report(self):
         with self.assertRaises(self.create_report.EmptyReport):

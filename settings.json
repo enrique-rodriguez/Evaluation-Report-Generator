@@ -1,6 +1,1 @@
-{
-    "professor_signature": "Nombre del Instructor:",
-    "question_signature": "Criterios de evaluaci\u00f3n: >>",
-    "max_points_per_question": 4,
-    "answer_pattern": "(Excelente|Bueno|Regular|Deficiente) \\((?P<points>\\d)\\)"
-}
+{"professor_signature": "Nombre del Instructor:", "question_signature": "Criterios de evaluaci\u00f3n: >>", "max_points_per_question": 4, "answer_pattern": "(Excelente|Bueno|Regular|Deficiente) \\((?P<points>\\d)\\)"}

@@ -15,6 +15,10 @@ from report_generator.utils.report_writer import (
     CSVReportWriter
 )
 
+from report_generator.presenters.console import (
+    ConsoleCreateReportPresenter
+)
+
 SETTINGS_FILE = "settings.json"
 
 ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
@@ -70,11 +74,19 @@ container.register(
     }
 )
 
+# Presenters initialization
+
+container.register(
+    "CreateReportPresenter",
+    lambda c: ConsoleCreateReportPresenter()
+)
+
 # Use Case Initialization
 container.register(
     "CreateReport",
     lambda c: CreateReport(
         readers=c.get("EvaluationReaders"),
-        writers=c.get("ReportWriters")
+        writers=c.get("ReportWriters"),
+        presenter=c.get("CreateReportPresenter")
     )
 )

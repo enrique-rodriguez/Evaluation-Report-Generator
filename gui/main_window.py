@@ -2,11 +2,8 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import filedialog
 from tkinter import messagebox
-
 from datetime import datetime
-
 from gui.constants import PADDING
-
 from gui import SettingsWindow
 
 SELECTED_FILES = "{selected} archivos seleccionados"
@@ -30,25 +27,31 @@ class MainWindow(Frame):
         self.report_creator = report_creator
 
         self.report_name_label = Label(
-            self.master, text="Nombre del reporte")
+            master=self.master,
+            text="Nombre del Reporte:")
 
         self.format_label = Label(
-            self.master, text="Formato del reporte")
+            master=self.master,
+            text="Formato del Reporte:")
 
         self.settings_button = Button(
-            text="Settings", command=self.open_settings)
+            master=self.master,
+            text="Ajustes",
+            command=self.open_settings)
 
         self.selected_format = StringVar(
+            master=self.master,
             value=self.report_creator.get_write_formats()[0])
 
         self.report_name = StringVar(
-            self.master,
-            value=build_filename(name=datetime.now().date(), extension=self.selected_format.get()))
+            master=self.master,
+            value=build_filename(name=datetime.now().date(),
+                                 extension=self.selected_format.get()))
 
         validate_report_name = self.master.register(self.validate_report_name)
 
         self.report_name_text_field = Entry(
-            self.master, width=25,
+            master=self.master, width=25,
             textvariable=self.report_name,
             validate='key',
             validatecommand=(validate_report_name, '%P'))
@@ -64,16 +67,21 @@ class MainWindow(Frame):
         ]
 
         self.select_evaluations_button = Button(
-            self.master, text="Seleccionar Evaluaciones", command=self.select_evaluations_handler)
+            master=self.master,
+            text="Seleccionar Evaluaciones",
+            command=self.select_evaluations_handler)
 
         self.selected_files = StringVar(
+            master=self.master,
             value=SELECTED_FILES.format(selected=0))
 
         self.selected_files_label = Label(
-            self.master, textvariable=self.selected_files)
+            master=self.master,
+            textvariable=self.selected_files)
 
         self.create_report_button = Button(
-            self.master, text="Crear Reporte")
+            master=self.master,
+            text="Crear Reporte")
 
         self.setupUI()
         self.bind_events()
@@ -101,7 +109,7 @@ class MainWindow(Frame):
         return report_name.endswith(selected_format)
 
     def open_settings(self):
-        SettingsWindow(self.master, self.settings)
+        SettingsWindow(self, self.settings)
 
     def select_evaluations_handler(self):
         files = filedialog.askopenfilenames()

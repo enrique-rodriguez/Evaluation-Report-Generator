@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
-
 from gui.constants import PADDING
 
 
@@ -23,6 +22,9 @@ class SettingsWindow(Toplevel):
         self.save_settings_button = Button(
             self, text='Guardar', command=self.save_settings)
 
+        self.setup_ui()
+
+    def setup_ui(self):
         self.max_points_frame.pack(fill=X)
         self.max_points_label.pack(pady=PADDING, fill=X, side=LEFT)
         self.max_points_per_question_spinbox.pack(

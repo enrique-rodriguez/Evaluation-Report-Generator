@@ -1,6 +1,10 @@
 from typing import Dict, List
 from report_generator.domain.report import Report
 
+from report_generator.usecases.port.presenter import (
+    CreateReportPresenter
+)
+
 from report_generator.usecases.port import (
     ReportWriter,
     EvaluationReader
@@ -9,9 +13,10 @@ from report_generator.usecases.port import (
 
 class CreateReport:
 
-    def __init__(self, readers: Dict[str, EvaluationReader], writers: Dict[str, ReportWriter]):
+    def __init__(self, readers: Dict[str, EvaluationReader], writers: Dict[str, ReportWriter], presenter: CreateReportPresenter):
         self.evaluation_readers = readers
         self.report_writers = writers
+        self.presenter = presenter
 
     def create(self, evaluations: List[str], output_file: str):
 
@@ -22,7 +27,9 @@ class CreateReport:
 
         writer = self.get_appropriate_writer(output_file)
 
-        writer.write(report, output_file)
+        total_written = writer.write(report, output_file)
+
+        self.presenter.present(errors, total_written)
 
     def get_report(self, evaluations: List[str]):
         errors = {}

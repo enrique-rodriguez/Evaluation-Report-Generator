@@ -39,6 +39,9 @@ class PandasEvaluationReader(EvaluationReader, abc.ABC):
         return evaluation
 
     def get_professors_name(self):
+        if self.instructor_signature not in self.df.columns:
+            raise self.ColumnNotFound(self.instructor_signature)
+
         return self.df[self.instructor_signature].mode().iloc[0]
 
     def calculate_total_points(self):
@@ -78,3 +81,7 @@ class PandasEvaluationReader(EvaluationReader, abc.ABC):
         return self.max_points_per_question *\
             self.get_number_of_questions() *\
             self.get_number_of_students()
+
+    class ColumnNotFound(Exception):
+        def __init__(self, column):
+            super().__init__(f"The following column was not found: {column}")
