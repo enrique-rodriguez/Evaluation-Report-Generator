@@ -31,7 +31,7 @@ pip3 install -r requirements_dev.txt
 Compiling the GUI executable
 
 ```sh
-python3 pyinstaller -w --onefile entrypoint/gui/main.py
+python3 pyinstaller -w --onefile main.py
 ```
 
 ### Running the Tests
