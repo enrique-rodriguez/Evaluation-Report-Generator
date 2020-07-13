@@ -111,7 +111,7 @@ class MainWindow(Frame):
 
         self.report_creator.create(
             evaluations=self.list_of_files_selected,
-            output_file=self.report_name.get()
+            output_file=filename
         )
 
     def set_total_files_selected(self, total):
