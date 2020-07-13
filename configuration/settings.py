@@ -27,6 +27,7 @@ container.register(
         config["professor_signature"],
         config["question_signature"],
         config["max_points_per_question"],
+        config["question_pattern"],
         config["answer_pattern"]
     )
 )
@@ -50,7 +51,6 @@ container.register(
 )
 
 # Presenters initialization
-
 container.register(
     "CreateReportPresenter",
     lambda c: TkinterCreateReportPresenter()

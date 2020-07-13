@@ -10,9 +10,31 @@ class PandasReportWriter(ReportWriter, abc.ABC):
     def export_df(self, df, filename):
         pass
 
+    def get_grade_string(self, question):
+        obtained, maximum = question
+
+        return f"{obtained}/{maximum}"
+
     def write(self, report: Report, filename: str):
 
-        df = pd.DataFrame({
+        df = pd.DataFrame(self.get_statistics(report))
+
+        self.add_questions_to_df(df, report)
+        self.export_df(df, filename)
+
+        write_count = df.shape[0]
+
+        return write_count
+
+    def add_questions_to_df(self, df, report):
+        reference = report.evaluations[0]
+
+        for question in reference.questions:
+            df[question] = [self.get_grade_string(
+                evaluation.questions[question]) for evaluation in report.evaluations]
+
+    def get_statistics(self, report):
+        return {
             "Profesor": [evaluation.professor for evaluation in report],
             "Curso": [evaluation.course for evaluation in report],
             "Numero de Estudiantes": [evaluation.student_count for evaluation in report],
@@ -20,10 +42,4 @@ class PandasReportWriter(ReportWriter, abc.ABC):
             "Puntuación Obtenida": [evaluation.score for evaluation in report],
             "Puntuación Máxima": [evaluation.maximum for evaluation in report],
             "Promedio": [evaluation.average for evaluation in report]
-        })
-
-        self.export_df(df, filename)
-
-        total_written = df.shape[0]
-
-        return total_written
+        }

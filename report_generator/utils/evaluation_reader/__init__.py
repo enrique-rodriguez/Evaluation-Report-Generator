@@ -6,3 +6,4 @@ ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
 PROFESSOR_SIGNATURE = ["Nombre del Instructor:", "Nombre de los recursos:"]
 QUESTION_SIGNATURE = "Criterios de evaluación: >>"
 MAX_POINTS_PER_QUESTION = 4
+QUESTION_PATTERN = "Criterios de evaluación: >> (.*).? >> .*"

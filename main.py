@@ -17,7 +17,7 @@ if __name__ == "__main__":
                     font=('Times', 18))
 
     root.title("Generador de Reportes")
-    root.geometry("300x350")
+    root.geometry("300x250")
     root.resizable(False, False)
 
     app = MainWindow(

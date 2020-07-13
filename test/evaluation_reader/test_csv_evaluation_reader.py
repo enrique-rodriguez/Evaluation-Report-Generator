@@ -8,6 +8,7 @@ from report_generator.utils.evaluation_reader import (
     PROFESSOR_SIGNATURE,
     QUESTION_SIGNATURE,
     MAX_POINTS_PER_QUESTION,
+    QUESTION_PATTERN,
     ANSWER_PATTERN
 )
 
@@ -15,6 +16,7 @@ reader_config = EvaluationReaderConfig(
     PROFESSOR_SIGNATURE,
     QUESTION_SIGNATURE,
     MAX_POINTS_PER_QUESTION,
+    QUESTION_PATTERN,
     ANSWER_PATTERN
 )
 
@@ -24,6 +26,7 @@ class TestCSVEvaluationReader(TestCase):
     def setUp(self):
         self.reader = CSVEvaluationReader(reader_config)
         self.evaluation = self.reader.read('data/test_evaluation.csv')
+        self.evaluation2 = self.reader.read('data/test_evaluation2.csv')
 
     def test_get_professors_name(self):
 
@@ -53,3 +56,12 @@ class TestCSVEvaluationReader(TestCase):
 
     def test_average_score(self):
         self.assertAlmostEqual(self.evaluation.average, 3.83)
+
+    def test_each_question_score(self):
+        expected = [84]
+        index = 0
+
+        for question, values in self.evaluation2.questions.items():
+            self.assertEqual(values[0], expected[index])
+            index += 1
+            break

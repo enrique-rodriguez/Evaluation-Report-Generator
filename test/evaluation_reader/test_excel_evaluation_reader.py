@@ -8,13 +8,15 @@ from report_generator.utils.evaluation_reader import (
     PROFESSOR_SIGNATURE,
     QUESTION_SIGNATURE,
     MAX_POINTS_PER_QUESTION,
-    ANSWER_PATTERN
+    ANSWER_PATTERN,
+    QUESTION_PATTERN
 )
 reader_config = EvaluationReaderConfig(
     PROFESSOR_SIGNATURE,
     QUESTION_SIGNATURE,
     MAX_POINTS_PER_QUESTION,
-    ANSWER_PATTERN
+    QUESTION_PATTERN,
+    ANSWER_PATTERN,
 )
 
 

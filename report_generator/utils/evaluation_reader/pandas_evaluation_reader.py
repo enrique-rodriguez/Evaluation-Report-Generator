@@ -28,13 +28,16 @@ class PandasEvaluationReader(EvaluationReader, abc.ABC):
         except Exception as error:
             raise self.ParsingError(filename, error)
 
+        student_count = self.get_number_of_students()
+        questions = self.get_questions(student_count)
+
         evaluation = Evaluation(
             professor=self.get_professors_name(),
             course=self.get_course_name(),
-            student_count=self.get_number_of_students(),
-            question_count=self.get_number_of_questions(),
-            score=self.calculate_total_points(),
-            maximum=self.get_maximum_score()
+            student_count=student_count,
+            score=self.calculate_total_points(questions),
+            maximum=self.get_maximum_score(len(questions), student_count),
+            questions=questions
         )
 
         return evaluation
@@ -47,20 +50,8 @@ class PandasEvaluationReader(EvaluationReader, abc.ABC):
 
         raise self.InstructorColumnNotFound
 
-    def calculate_total_points(self):
-
-        def calculator(total, match): return total + \
-            int(match.group('points')) if match else total
-
-        total_points = 0
-
-        for column in self.df.columns:
-            if column.startswith(self.question_signature):
-                matches = [self.program.match(
-                    element) for element in self.df[column] if isinstance(element, str)]
-                total_points += reduce(calculator, matches, 0)
-
-        return total_points
+    def calculate_total_points(self, questions):
+        return sum([points for points, maximum in questions.values()])
 
     def get_course_name(self):
         # Just return the name of the file since
@@ -72,18 +63,40 @@ class PandasEvaluationReader(EvaluationReader, abc.ABC):
 
         return row_count
 
-    def get_number_of_questions(self):
-        def count_questions(total, question):
-            if question.startswith(self.question_signature):
-                return total + 1
-            return total
-
-        return reduce(count_questions, self.df.columns, 0)//self.max_points_per_question
-
-    def get_maximum_score(self):
+    def get_maximum_score(self, number_questions, number_of_students):
         return self.max_points_per_question *\
-            self.get_number_of_questions() *\
-            self.get_number_of_students()
+            number_questions *\
+            number_of_students
+
+    def get_questions(self, student_count):
+
+        questions = {}
+
+        for column in self.df.columns:
+            match = self.question_matcher.match(column)
+
+            if not match:
+                continue
+
+            question_title = match.group(1)
+            column_sum = self.get_column_sum(column)
+
+            if question_title not in questions:
+                max_possible = student_count*self.max_points_per_question
+                questions[question_title] = [column_sum, max_possible]
+            else:
+                questions[question_title][0] += column_sum
+
+        return questions
+
+    def get_column_sum(self, column):
+        total = 0
+
+        for element in self.df[column]:
+            if isinstance(element, str):
+                total += int(self.answer_matcher.match(element).group('points'))
+
+        return total
 
     class InstructorColumnNotFound(Exception):
         def __init__(self):

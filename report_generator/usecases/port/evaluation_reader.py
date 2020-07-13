@@ -9,6 +9,7 @@ class EvaluationReaderConfig:
     instructor_signature: str = ""
     question_signature: str = ""
     maximum_points_per_question: int = 0
+    question_pattern: str = ""
     answer_pattern: str = ""
 
 
@@ -20,7 +21,8 @@ class EvaluationReader(abc.ABC):
             raise self.InvalidMaximumPointsPerQuestion(
                 config.maximum_points_per_question)
 
-        self.program = re.compile(config.answer_pattern)
+        self.answer_matcher = re.compile(config.answer_pattern)
+        self.question_matcher = re.compile(config.question_pattern)
         self.instructor_signature = config.instructor_signature
         self.question_signature = config.question_signature
         self.max_points_per_question = config.maximum_points_per_question
@@ -43,10 +45,6 @@ class EvaluationReader(abc.ABC):
 
     @abc.abstractmethod
     def get_number_of_students(self):
-        pass
-
-    @abc.abstractmethod
-    def get_number_of_questions(self):
         pass
 
     class InvalidMaximumPointsPerQuestion(Exception):

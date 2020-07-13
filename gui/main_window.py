@@ -27,10 +27,6 @@ class MainWindow(Frame):
         self.report_creator = report_creator
         self.list_of_files_selected = []
 
-        self.report_name_label = Label(
-            master=self.master,
-            text="Nombre del Reporte:")
-
         self.format_label = Label(
             master=self.master,
             text="Formato del Reporte:")
@@ -48,14 +44,6 @@ class MainWindow(Frame):
             master=self.master,
             value=build_filename(name=datetime.now().date(),
                                  extension=self.selected_format.get()))
-
-        validate_report_name = self.master.register(self.validate_report_name)
-
-        self.report_name_text_field = Entry(
-            master=self.master, width=25,
-            textvariable=self.report_name,
-            validate='key',
-            validatecommand=(validate_report_name, '%P'))
 
         self.report_formats = [
             Radiobutton(
@@ -86,11 +74,8 @@ class MainWindow(Frame):
             command=self.create_report_handler)
 
         self.setupUI()
-        self.bind_events()
 
     def setupUI(self):
-        self.report_name_label.pack(pady=PADDING, fill=X)
-        self.report_name_text_field.pack(pady=PADDING, fill=X)
         self.format_label.pack(pady=PADDING, fill=X)
 
         for report_format in self.report_formats:
@@ -100,15 +85,6 @@ class MainWindow(Frame):
         self.selected_files_label.pack(pady=PADDING, fill=X)
         self.create_report_button.pack(pady=PADDING, fill=X)
         self.settings_button.pack(pady=PADDING, fill=X)
-
-    def bind_events(self):
-        for event in ["<FocusIn>", "<Command-a>", "<Control-KeyRelease-a>"]:
-            self.report_name_text_field.bind(event, select_all)
-
-    def validate_report_name(self, report_name):
-        selected_format = self.selected_format.get()
-
-        return report_name.endswith(selected_format)
 
     def open_settings(self):
         SettingsWindow(self, self.settings)
@@ -126,8 +102,17 @@ class MainWindow(Frame):
         if len(self.list_of_files_selected) == 0:
             return messagebox.showerror("Error", "No hay archivos seleccionados")
 
+        filename = filedialog.asksaveasfilename(
+            initialfile=self.report_name.get()
+        )
+
+        if not filename:
+            return
+
         self.report_creator.create(
-            self.list_of_files_selected, self.report_name.get())
+            evaluations=self.list_of_files_selected,
+            output_file=self.report_name.get()
+        )
 
     def set_total_files_selected(self, total):
         self.selected_files.set(SELECTED_FILES.format(selected=total))
