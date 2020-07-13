@@ -25,6 +25,7 @@ class MainWindow(Frame):
         super().__init__(master=master)
         self.settings = settings
         self.report_creator = report_creator
+        self.list_of_files_selected = []
 
         self.report_name_label = Label(
             master=self.master,
@@ -81,7 +82,8 @@ class MainWindow(Frame):
 
         self.create_report_button = Button(
             master=self.master,
-            text="Crear Reporte")
+            text="Crear Reporte",
+            command=self.create_report_handler)
 
         self.setupUI()
         self.bind_events()
@@ -114,7 +116,18 @@ class MainWindow(Frame):
     def select_evaluations_handler(self):
         files = filedialog.askopenfilenames()
 
+        if len(files) == 0:
+            return
+
         self.set_total_files_selected(len(files))
+        self.list_of_files_selected = files
+
+    def create_report_handler(self):
+        if len(self.list_of_files_selected) == 0:
+            return messagebox.showerror("Error", "No hay archivos seleccionados")
+
+        self.report_creator.create(
+            self.list_of_files_selected, self.report_name.get())
 
     def set_total_files_selected(self, total):
         self.selected_files.set(SELECTED_FILES.format(selected=total))

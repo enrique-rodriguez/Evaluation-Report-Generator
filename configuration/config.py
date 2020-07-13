@@ -24,6 +24,8 @@ class Config:
         with open(self.file, 'w') as file:
             json.dump(self.settings, file)
 
+        return self
+
     @staticmethod
     def open(filename):
         with open(filename, 'r') as file:

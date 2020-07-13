@@ -4,10 +4,12 @@ from report_generator.utils.evaluation_reader.csv_evaluation_reader import (
     CSVEvaluationReader,
 )
 
-ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
-PROFESSOR_SIGNATURE = "Nombre del Instructor:"
-QUESTION_SIGNATURE = "Criterios de evaluación: >>"
-MAX_POINTS_PER_QUESTION = 4
+from report_generator.utils.evaluation_reader import (
+    PROFESSOR_SIGNATURE,
+    QUESTION_SIGNATURE,
+    MAX_POINTS_PER_QUESTION,
+    ANSWER_PATTERN
+)
 
 reader_config = EvaluationReaderConfig(
     PROFESSOR_SIGNATURE,

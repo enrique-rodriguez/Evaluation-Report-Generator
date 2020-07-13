@@ -1,8 +1,6 @@
-import json
 from utils.container import Container
 from report_generator.usecases import CreateReport
-
-from .config import Config
+from configuration import config
 
 from report_generator.utils.evaluation_reader import (
     ExcelEvaluationReader,
@@ -15,32 +13,9 @@ from report_generator.utils.report_writer import (
     CSVReportWriter
 )
 
-from report_generator.presenters.console import (
-    ConsoleCreateReportPresenter
+from gui.presenters import (
+    TkinterCreateReportPresenter
 )
-
-SETTINGS_FILE = "settings.json"
-
-ANSWER_PATTERN = "(Excelente|Bueno|Regular|Deficiente) \((?P<points>\d)\)"
-PROFESSOR_SIGNATURE = "Nombre del Instructor:"
-QUESTION_SIGNATURE = "Criterios de evaluación: >>"
-MAX_POINTS_PER_QUESTION = 4
-
-
-default_config = {
-    "professor_signature": PROFESSOR_SIGNATURE,
-    "question_signature": QUESTION_SIGNATURE,
-    "max_points_per_question": MAX_POINTS_PER_QUESTION,
-    "answer_pattern": ANSWER_PATTERN
-}
-
-
-try:
-    config = Config(SETTINGS_FILE)
-except FileNotFoundError:
-    print("Settings file not found, using default settings")
-    config = Config(SETTINGS_FILE, default_config)
-    config.save()
 
 # Stores all of the dependencies in one place for easy access
 container = Container()
@@ -78,7 +53,7 @@ container.register(
 
 container.register(
     "CreateReportPresenter",
-    lambda c: ConsoleCreateReportPresenter()
+    lambda c: TkinterCreateReportPresenter()
 )
 
 # Use Case Initialization
