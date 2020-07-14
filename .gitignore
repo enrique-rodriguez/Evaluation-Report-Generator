@@ -1,4 +1,10 @@
 venv/
+dist/
+build/
+
+settings.json
+
 __pycache__/
 .DS_Store
 evaluaciones/
+.vscode

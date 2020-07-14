@@ -56,12 +56,3 @@ class TestCSVEvaluationReader(TestCase):
 
     def test_average_score(self):
         self.assertAlmostEqual(self.evaluation.average, 3.83)
-
-    def test_each_question_score(self):
-        expected = [84]
-        index = 0
-
-        for question, values in self.evaluation2.questions.items():
-            self.assertEqual(values[0], expected[index])
-            index += 1
-            break

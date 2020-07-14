@@ -11,6 +11,7 @@ from report_generator.utils.evaluation_reader import (
     ANSWER_PATTERN,
     QUESTION_PATTERN
 )
+
 reader_config = EvaluationReaderConfig(
     PROFESSOR_SIGNATURE,
     QUESTION_SIGNATURE,

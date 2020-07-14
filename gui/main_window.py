@@ -10,16 +10,6 @@ SELECTED_FILES = "{selected} archivos seleccionados"
 DEFAULT_REPORT_NAME = "reporte-{name}.{extension}"
 
 
-def build_filename(name, extension):
-    return DEFAULT_REPORT_NAME.format(name=name, extension=extension)
-
-
-def select_all(event):
-    end = event.widget.get().index('.')
-    event.widget.select_range(0, end)
-    event.widget.icursor('end')
-
-
 class MainWindow(Frame):
     def __init__(self, master, settings, report_creator):
         super().__init__(master=master)
@@ -42,16 +32,14 @@ class MainWindow(Frame):
 
         self.report_name = StringVar(
             master=self.master,
-            value=build_filename(name=datetime.now().date(),
-                                 extension=self.selected_format.get()))
+            value=self.build_filename())
 
         self.report_formats = [
             Radiobutton(
                 master=self.master,
                 variable=self.selected_format,
                 value=file_format,
-                text=file_format,
-                command=self.change_report_name_extension
+                text=file_format
             ) for file_format in self.report_creator.get_write_formats()
         ]
 
@@ -103,7 +91,7 @@ class MainWindow(Frame):
             return messagebox.showerror("Error", "No hay archivos seleccionados")
 
         filename = filedialog.asksaveasfilename(
-            initialfile=self.report_name.get()
+            initialfile=self.build_filename(),
         )
 
         if not filename:
@@ -113,16 +101,12 @@ class MainWindow(Frame):
             evaluations=self.list_of_files_selected,
             output_file=filename
         )
+    
+    def build_filename(self):
+        return DEFAULT_REPORT_NAME.format(
+            name=datetime.now().date(), 
+            extension=self.selected_format.get()
+        )
 
     def set_total_files_selected(self, total):
         self.selected_files.set(SELECTED_FILES.format(selected=total))
-
-    def change_report_name_extension(self):
-        if '.' in self.report_name.get():
-            filename, _ = self.report_name.get().split('.')
-        else:
-            filename = self.report_name.get()
-
-        new_filename = ".".join([filename, self.selected_format.get()])
-
-        self.report_name.set(new_filename)
