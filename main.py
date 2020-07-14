@@ -20,12 +20,12 @@ if __name__ == "__main__":
                     font=('Times', 18))
 
     root.title("Generador de Reportes")
-    root.geometry("500x300")
+    root.geometry("350x300")
     root.resizable(False, False)
 
     app = MainWindow(
         master=root,
-        settings=settings.config,
+        settings=settings.user_settings,
         report_creator=settings.container.get("CreateReport")
     )
 

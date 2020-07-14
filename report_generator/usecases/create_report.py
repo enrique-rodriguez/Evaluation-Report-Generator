@@ -20,20 +20,20 @@ class CreateReport:
 
     def create(self, evaluations: List[str], output_file: str):
 
-        report, errors = self.get_report(evaluations)
+        report, errors = self.get_report(evaluations, output_file)
 
         if len(report) == 0:
             raise self.EmptyReport
 
         writer = self.get_appropriate_writer(output_file)
 
-        total_written = writer.write(report, output_file)
+        total_written = writer.write(report)
 
         self.presenter.present(errors, total_written)
 
-    def get_report(self, evaluations: List[str]):
+    def get_report(self, evaluations: List[str], name: str):
         errors = {}
-        report = Report()
+        report = Report(name)
 
         for file in evaluations:
             try:

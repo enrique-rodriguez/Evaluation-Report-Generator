@@ -1,4 +1,4 @@
-from .config import Config
+from .user_settings import user_settings
 
 from report_generator.utils.evaluation_reader import (
     PROFESSOR_SIGNATURE,
@@ -15,13 +15,3 @@ default_config = {
     "answer_pattern": ANSWER_PATTERN,
     "question_pattern": QUESTION_PATTERN
 }
-
-# Load application settings
-
-SETTINGS_FILE = "settings.json"
-
-try:
-    config = Config(SETTINGS_FILE)
-except FileNotFoundError:
-    print("Settings file not found, using default settings")
-    config = Config(SETTINGS_FILE, default_config).save()

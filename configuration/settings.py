@@ -1,6 +1,8 @@
-from utils.container import Container
+from utils import Container
+
+from configuration import user_settings
+
 from report_generator.usecases import CreateReport
-from configuration import config
 
 from report_generator.utils.evaluation_reader import (
     ExcelEvaluationReader,
@@ -24,11 +26,11 @@ container = Container()
 container.register(
     "EvaluationReaderConfig",
     lambda c: EvaluationReaderConfig(
-        config["professor_signature"],
-        config["question_signature"],
-        config["max_points_per_question"],
-        config["question_pattern"],
-        config["answer_pattern"]
+        user_settings["professor_signature"],
+        user_settings["question_signature"],
+        user_settings["max_points_per_question"],
+        user_settings["question_pattern"],
+        user_settings["answer_pattern"]
     )
 )
 

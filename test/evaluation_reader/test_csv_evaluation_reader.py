@@ -26,7 +26,6 @@ class TestCSVEvaluationReader(TestCase):
     def setUp(self):
         self.reader = CSVEvaluationReader(reader_config)
         self.evaluation = self.reader.read('data/test_evaluation.csv')
-        self.evaluation2 = self.reader.read('data/test_evaluation2.csv')
 
     def test_get_professors_name(self):
 

@@ -1,14 +1,14 @@
+from dataclasses import dataclass
 
-
+@dataclass
 class Evaluation:
 
-    def __init__(self, professor: str, course: str, student_count: int, score: int, maximum: int, questions: list):
-        self.professor = professor
-        self.course = course
-        self.student_count = student_count
-        self.score = score
-        self.maximum = maximum
-        self.questions = questions
+    professor: str = ""
+    course: str = ""
+    student_count: int = 0
+    score: int = 0
+    maximum: int = 0
+    questions: list = None
 
     @property
     def question_count(self):

@@ -4,7 +4,8 @@ from .evaluation import Evaluation
 
 class Report:
 
-    def __init__(self):
+    def __init__(self, name: str):
+        self.name = name
         self.evaluations: List[Evaluation] = list()
 
     def add(self, evaluation: Evaluation):
@@ -15,7 +16,3 @@ class Report:
 
     def __len__(self):
         return len(self.evaluations)
-
-
-if __name__ == '__main__':
-    print('hello')

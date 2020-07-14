@@ -15,12 +15,12 @@ class PandasReportWriter(ReportWriter, abc.ABC):
 
         return f"{obtained}/{maximum}"
 
-    def write(self, report: Report, filename: str):
+    def write(self, report: Report):
 
         df = pd.DataFrame(self.get_statistics(report))
 
         self.add_questions_to_df(df, report)
-        self.export_df(df, filename)
+        self.export_df(df, report.name)
 
         write_count = df.shape[0]
 

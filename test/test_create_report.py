@@ -11,7 +11,9 @@ class TestCreateReport(TestCase):
         presenter = Mock()
 
         self.create_report = CreateReport(
-            readers=readers, writers=writers, presenter=presenter)
+            readers=readers, 
+            writers=writers, 
+            presenter=presenter)
 
     def test_raises_empty_report(self):
         with self.assertRaises(self.create_report.EmptyReport):
