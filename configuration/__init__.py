@@ -1,4 +1,3 @@
-from .user_settings import user_settings
 
 from report_generator.utils.evaluation_reader import (
     PROFESSOR_SIGNATURE,

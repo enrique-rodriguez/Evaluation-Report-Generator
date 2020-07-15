@@ -1,6 +1,6 @@
 from utils import Container
 
-from configuration import user_settings
+from configuration.user_settings import user_settings
 
 from report_generator.usecases import CreateReport
 

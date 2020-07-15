@@ -1,4 +1,5 @@
 from utils import Config
+from configuration import default_config
 
 # Load application settings
 
