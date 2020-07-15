@@ -17,22 +17,26 @@ class CreateReport:
         self.evaluation_readers = readers
         self.report_writers = writers
         self.presenter = presenter
+        self.errors = {}
 
     def create(self, evaluations: List[str], output_file: str):
 
-        report, errors = self.get_report(evaluations, output_file)
+        if len(evaluations) == 0:
+            raise ValueError("No files provided, no report to create.")
+
+        report = self.get_report(evaluations, output_file)
 
         if len(report) == 0:
-            raise self.EmptyReport
+            raise self.EmptyReport(self.errors)
 
         writer = self.get_appropriate_writer(output_file)
 
         total_written = writer.write(report)
 
-        self.presenter.present(errors, total_written)
+        self.presenter.present(self.errors, total_written)
 
     def get_report(self, evaluations: List[str], name: str):
-        errors = {}
+        self.errors.clear()
         report = Report(name)
 
         for file in evaluations:
@@ -41,9 +45,9 @@ class CreateReport:
                 evaluation = reader.read(file)
                 report.add(evaluation)
             except Exception as error:
-                errors[file] = error
+                self.errors[file] = error
 
-        return report, errors
+        return report
 
     def get_appropriate_writer(self, filename: str):
         if '.' not in filename:
@@ -73,8 +77,9 @@ class CreateReport:
         return list(self.report_writers.keys())
 
     class EmptyReport(Exception):
-        def __init__(self):
+        def __init__(self, errors):
             super().__init__("The Report is Empty")
+            self.errors = errors
 
     class EvaluationReaderNotAvailable(Exception):
         def __init__(self, file_extension):

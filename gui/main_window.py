@@ -97,10 +97,22 @@ class MainWindow(Frame):
         if not filename:
             return
 
-        self.report_creator.create(
-            evaluations=self.list_of_files_selected,
-            output_file=filename
-        )
+        try:
+            self.report_creator.create(
+                evaluations=self.list_of_files_selected,
+                output_file=filename
+            )
+        except self.report_creator.EmptyReport as error:
+            message = self.build_empty_report_message(error.errors)
+            messagebox.showerror("Reporte Vacío", message)
+    
+    def build_empty_report_message(self, errors):
+        message = "Los siguientes archivos no se pudieron procesar:\n\n"
+
+        for file, error in errors.items():
+            message += f"{file}: {error}"
+        
+        return message
     
     def build_filename(self):
         return DEFAULT_REPORT_NAME.format(

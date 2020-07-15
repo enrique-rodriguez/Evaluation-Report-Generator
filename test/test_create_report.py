@@ -14,10 +14,14 @@ class TestCreateReport(TestCase):
             readers=readers, 
             writers=writers, 
             presenter=presenter)
+    
+    def test_raises_no_files_provided(self):
+        with self.assertRaises(ValueError):
+            self.create_report.create([], 'report.csv')
 
     def test_raises_empty_report(self):
         with self.assertRaises(self.create_report.EmptyReport):
-            self.create_report.create([], 'report.csv')
+            self.create_report.create([''], 'report.csv')
 
     def test_evaluation_added_to_report(self):
         self.create_report.create(['file.csv'], 'file.csv')

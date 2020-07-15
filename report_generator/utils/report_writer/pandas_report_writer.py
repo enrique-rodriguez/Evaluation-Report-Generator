@@ -20,7 +20,11 @@ class PandasReportWriter(ReportWriter, abc.ABC):
         df = pd.DataFrame(self.get_statistics(report))
 
         self.add_questions_to_df(df, report)
-        self.export_df(df, report.name)
+        
+        try:
+            self.export_df(df, report.name)
+        except Exception as error:
+            raise self.WriteError(error)
 
         write_count = df.shape[0]
 
