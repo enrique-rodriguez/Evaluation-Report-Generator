@@ -6,15 +6,23 @@ from report_generator.usecases.port.evaluation_reader import EvaluationReader
 from report_generator.usecases.port.report_writer import ReportWriter
 from report_generator.domain import Evaluation
 
-class MockEvaluationReader(Mock):
+
+class MockCSVEvaluationReader(Mock):
 
     def read(self, filename):
-        return Evaluation("",filename,1,4,4,['question'])
+
+        if not filename.endswith('.csv'):
+            raise EvaluationReader.ParsingError(
+                filename, "Can only read csv file")
+
+        return Evaluation("", filename, 1, 4, 4, ['question'])
+
 
 class MockReportWriter(Mock):
 
     def write(self, report):
         return len(report)
+
 
 class MockPresenter(Mock, CreateReportPresenter):
 
@@ -31,15 +39,15 @@ class MockPresenter(Mock, CreateReportPresenter):
 class TestCreateReport(TestCase):
 
     def setUp(self):
-        readers = {'csv':MockEvaluationReader()}
+        readers = {'csv': MockCSVEvaluationReader()}
         writers = {'csv': MockReportWriter()}
         presenter = MockPresenter()
 
         self.create_report = CreateReport(
-            readers=readers, 
-            writers=writers, 
+            readers=readers,
+            writers=writers,
             presenter=presenter)
-    
+
     def test_raises_no_files_provided(self):
         with self.assertRaises(ValueError):
             self.create_report.create([], 'report.csv')
@@ -54,12 +62,12 @@ class TestCreateReport(TestCase):
 
     def test_raises_reader_not_available(self):
         with self.assertRaises(self.create_report.EvaluationReaderNotAvailable):
-            self.create_report.get_appropriate_reader('file.txt')
+            self.create_report.read_evaluation_file('file.txt')
 
     def test_raises_writer_not_available(self):
         with self.assertRaises(self.create_report.ReportWriterNotAvailable):
             self.create_report.get_appropriate_writer("file.docx")
-    
+
     def test_no_evaluation_files_provided(self):
         with self.assertRaises(ValueError):
             self.create_report.create([], 'report.csv')

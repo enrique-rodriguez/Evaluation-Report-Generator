@@ -41,8 +41,7 @@ class CreateReport:
 
         for file in evaluations:
             try:
-                reader = self.get_appropriate_reader(file)
-                evaluation = reader.read(file)
+                evaluation = self.read_evaluation_file(file)
                 report.add(evaluation)
             except Exception as error:
                 self.errors[file] = error
@@ -53,7 +52,6 @@ class CreateReport:
         if '.' not in filename:
             raise ValueError("File has no extension")
 
-        # Not the best way to know the type of file, but it will have to do
         name, extension = filename.split('.')
 
         if extension not in self.report_writers:
@@ -61,17 +59,16 @@ class CreateReport:
 
         return self.report_writers.get(extension)
 
-    def get_appropriate_reader(self, file: str):
-        if '.' not in file:
-            raise ValueError("File has no extension")
+    def read_evaluation_file(self, file: str):
 
-        # Not the best way to know the type of file, but it will have to do
-        name, extension = file.split('.')
+        for file_format, reader in self.evaluation_readers.items():
+            try:
+                evaluation = reader.read(file)
+                return evaluation
+            except EvaluationReader.ParsingError:
+                pass
 
-        if extension not in self.evaluation_readers:
-            raise self.EvaluationReaderNotAvailable(extension)
-
-        return self.evaluation_readers.get(extension)
+        raise self.EvaluationReaderNotAvailable(file)
 
     def get_write_formats(self):
         return list(self.report_writers.keys())
@@ -82,8 +79,8 @@ class CreateReport:
             self.errors = errors
 
     class EvaluationReaderNotAvailable(Exception):
-        def __init__(self, file_extension):
-            error = f"Do not know how to read '{file_extension}' files."
+        def __init__(self, file):
+            error = f"No reader available for {file}."
             super().__init__(error)
 
     class ReportWriterNotAvailable(Exception):
